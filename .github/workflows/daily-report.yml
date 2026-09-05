@@ -25,4 +25,5 @@ jobs:
       - name: Generate and send daily report
         env:
           QQ_MAIL_AUTH_CODE: ${{ secrets.QQ_MAIL_AUTH_CODE }}
+          RECEIVER_EMAILS: ${{ vars.RECEIVER_EMAILS }}
         run: python report.py
