@@ -10,6 +10,7 @@
 import os
 import sys
 import smtplib
+import random
 import requests
 from datetime import datetime
 from email.mime.text import MIMEText
@@ -88,6 +89,36 @@ WEATHER_MAP = {
 def translate_weather(desc):
     """天气描述翻译"""
     return WEATHER_MAP.get(desc, desc)
+
+
+# ============== 健身提示模块 ==============
+FITNESS_TIPS = [
+    "久坐每50分钟起身活动2分钟，做几组肩颈环绕，缓解颈椎压力。",
+    "深蹲时膝盖不要超过脚尖，重心放在脚后跟，感受臀部发力。",
+    "平板支撑时收紧核心，不要塌腰，保持身体一条直线，每次30秒起步。",
+    "训练后拉伸10分钟，重点拉伸大腿前侧、后侧和臀部，减少次日酸痛。",
+    "俯卧撑时双手略宽于肩，身体保持直线，下放时胸部接近地面。",
+    "跑步前先快走5分钟热身，跑完不要立刻停下，慢走3分钟再做拉伸。",
+    "硬拉时背部挺直，用腿部和臀部发力拉起，不要弯腰弓背。",
+    "每天饮水2000ml以上，训练时每15分钟补充少量水分，不要等口渴才喝。",
+    "卧推时肩胛骨收紧下沉，杠铃下落至胸部中下方，推起时手臂不要完全锁死。",
+    "引体向上下放时控制速度，不要自由落体，感受背部肌肉拉伸。",
+    "训练日保证7-8小时睡眠，肌肉在休息时生长，不是在训练时。",
+    "蛋白质摄入每公斤体重1.2-1.6克，分散到三餐，帮助肌肉恢复。",
+    "膝盖有弹响时减少深度深蹲，优先做半蹲和腿举，注重臀部发力保护膝关节。",
+    "久坐人群多做髋屈肌拉伸，每侧30秒，改善骨盆前倾和腰部不适。",
+    "力量训练先练大肌群（胸背腿），再练小肌群（肩臂腹），效率更高。",
+    "热身不要只做静态拉伸，先做5分钟动态热身（高抬腿、开合跳），再开始训练。",
+    "减重期间每周减重不超过体重的1%，过快减重会流失肌肉，降低基础代谢。",
+    "训练时记录重量和次数，逐步递增负荷，肌肉才会持续生长（渐进超负荷）。",
+    "饭后1小时再进行剧烈运动，避免肠胃不适；运动后30分钟内补充蛋白质和碳水。",
+    "站姿时刻意收紧核心，肩膀下沉后展，改善圆肩驼背，提升气质。",
+]
+
+
+def get_fitness_tip():
+    """随机获取一条健身提示"""
+    return random.choice(FITNESS_TIPS)
 
 
 # ============== 天气模块 ==============
@@ -306,7 +337,7 @@ def gold_summary(gold_list):
 
 
 # ============== 邮件模块 ==============
-def build_email_content(weather, gold_list, date_str):
+def build_email_content(weather, gold_list, fitness_tip, date_str):
     """构建邮件正文（HTML 格式）"""
     weekday_map = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"]
     now = datetime.now()
@@ -410,6 +441,16 @@ def build_email_content(weather, gold_list, date_str):
         html += '<p style="color:#999;">黄金数据获取失败。</p>'
     html += "</div>"
 
+    # 健身提示部分
+    html += f"""
+  <div class="section">
+    <div class="section-title"><span>💪</span> 每日健身提示</div>
+    <div class="advice">
+      <p>{fitness_tip}</p>
+    </div>
+  </div>
+"""
+
     # 页脚
     html += """
   <div class="footer">
@@ -467,7 +508,7 @@ def main():
     subject = f"{date_str} 日报总结"
 
     # 1. 获取天气
-    print("\n[1/3] 获取成都天气...")
+    print("\n[1/4] 获取成都天气...")
     weather = get_weather()
     if weather:
         print(f"  → {weather['desc']}, {weather['min_temp']}~{weather['max_temp']}℃")
@@ -475,14 +516,19 @@ def main():
         print("  → 获取失败")
 
     # 2. 获取黄金
-    print("\n[2/3] 获取黄金行情...")
+    print("\n[2/4] 获取黄金行情...")
     gold_list = get_gold_price()
     for g in gold_list:
         print(f"  → {g['name']}: {g['price']} {g['change_pct']}")
 
-    # 3. 生成并发送邮件
-    print("\n[3/3] 生成邮件并发送...")
-    html_content = build_email_content(weather, gold_list, date_str)
+    # 3. 获取健身提示
+    print("\n[3/4] 获取健身提示...")
+    fitness_tip = get_fitness_tip()
+    print(f"  → {fitness_tip[:30]}...")
+
+    # 4. 生成并发送邮件
+    print("\n[4/4] 生成邮件并发送...")
+    html_content = build_email_content(weather, gold_list, fitness_tip, date_str)
     success = send_email(subject, html_content)
 
     if success:
