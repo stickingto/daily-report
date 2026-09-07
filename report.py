@@ -121,6 +121,71 @@ def get_fitness_tip():
     return random.choice(FITNESS_TIPS)
 
 
+# ============== 职场沟通技巧模块 ==============
+WORKPLACE_TIPS = [
+    "汇报问题先说结论+1个核心原因，最后说你需要什么支持，不要铺细节。",
+    "接需求先确认三件事：截止时间、验收标准、优先级，避免做无用功。",
+    "产线沟通先讲设备号+异常现象，再讲你的判断，最后说需要谁配合。",
+    "被领导追问时，不确定就说\"我确认一下，10分钟内回复你\"，不要硬编答案。",
+    "开会发言用三段式：现状是什么→问题在哪→建议怎么做，控制在30秒内。",
+    "跨部门沟通先讲对方关心的利益点，再讲你的需求，对方才愿意配合。",
+    "写邮件/消息标题写清楚\"什么事+需要谁做+截止时间\"，不要只写\"帮忙看一下\"。",
+    "遇到冲突先复述对方观点（\"我理解你的意思是…\"），再表达自己的看法，避免情绪化。",
+    "向上汇报进度用\"已完成X→正在做Y→下一步计划Z\"的结构，让领导一目了然。",
+    "拒绝请求时先说\"我现在手头有A和B，优先级你看怎么排\"，把决定权交回去。",
+    "提问前先自己想3个可能的答案，带着方案去问，比直接问\"怎么办\"专业得多。",
+    "交接工作时写清楚：做了什么→做到哪一步→下一步谁接手→有什么风险点，不要口头交接。",
+    "被表扬时大方说\"谢谢，这是和XX一起做的\"，既不谦虚过度也不独吞功劳。",
+    "产线异常上报时附一张截图或设备面板照片，比纯文字描述效率高10倍。",
+    "和老员工沟通多请教少争辩，先认可经验再提新想法，对方更容易接受。",
+    "每日下班前花5分钟写今日小结：完成了什么、卡在哪、明天先做什么，长期坚持复盘能力会明显提升。",
+    "遇到不懂的术语当场记下来，会后查清楚再问，不要在会上反复追问显得不专业。",
+    "给领导发消息不要发长语音，文字分点写清楚，领导可以快速扫完。",
+    "项目延期时主动提前说，附上原因和新的时间计划，不要等到截止日才说做不完。",
+    "和同事协作时明确分工边界，\"这块我负责，那块你确认\"，避免事后扯皮。",
+]
+
+
+def get_workplace_tip():
+    """随机获取一条职场沟通技巧"""
+    return random.choice(WORKPLACE_TIPS)
+
+
+# ============== 半导体专业术语模块 ==============
+SEMICON_TERMS = [
+    ("EAP", "Equipment Automation Program，设备自动化程序。EAP工程师的核心工作就是写和维护这个程序，负责MES系统和产线设备之间的通信调度。"),
+    ("SECS/GEM", "SEMI标准的设备通信协议。SECS定义消息格式，GEM定义设备行为规范，是半导体厂设备和MES通信的通用语言，EAP必须吃透。"),
+    ("MES", "Manufacturing Execution System，制造执行系统。管产线上每一片晶圆的流程、参数、追溯，EAP就是MES和设备之间的翻译官。"),
+    ("FDC", "Fault Detection and Classification，故障检测与分类。实时采集设备传感器数据，用算法判断设备是否异常，是EAP进阶方向。"),
+    ("APC", "Advanced Process Control，先进工艺控制。根据前一批的测量结果自动调整下一批的工艺参数，减少偏差，EAP需要理解其触发逻辑。"),
+    ("R2R", "Run-to-Run Control，批次间控制。每跑完一批晶圆就根据反馈微调下一批参数，属于APC的一种，常见于CMP、刻蚀等工艺。"),
+    ("EES", "Equipment Engineering System，设备工程系统。比EAP更上层，管设备的工程数据采集、分析、SPC监控，EAP工程师往上走常接触。"),
+    ("SPC", "Statistical Process Control，统计过程控制。用控制图监控工艺参数是否在正常范围，超限报警，是产线质量管控的基础工具。"),
+    ("Wafer Map", "晶圆图。把一片晶圆上每个die的测试结果（良/坏/类型）用颜色标在图上，EAP经常要解析和传递这个数据。"),
+    ("Lot", "批次。产线上一批晶圆（通常25片）作为一个流转单位，EAP调度的基本单位就是Lot。"),
+    ("Recipe", "配方/工艺程序。设备跑某道工艺时用的参数集合，EAP要负责把正确的Recipe下发给正确的设备。"),
+    ("Carrier/Foup", "晶圆传送盒。装晶圆的容器，FOUP是12寸厂标准，EAP要跟踪哪个Carrier在哪个设备端口。"),
+    ("Port", "设备端口。设备上放FOUP的位置，EAP要管理Port的状态（占用/空闲/异常）和晶圆上下料。"),
+    ("Track In/Out", "进站/出站。晶圆进入某道工艺叫Track In，完成离开叫Track Out，EAP要把这两个事件准确报给MES。"),
+    ("OHT", "Overhead Hoist Transport，天车传输系统。12寸厂晶圆在设备间靠头顶的天车搬运，EAP要和OHT系统配合调度上下料。"),
+    ("AGV", "Automated Guided Vehicle，自动导引车。部分厂区用地面小车搬晶圆，和OHT对应，EAP同样要配合调度。"),
+    ("Chamber", "工艺腔。设备内部真正做工艺的腔体，一台设备可能有多个Chamber，EAP要管理每个Chamber的状态和Recipe。"),
+    ("PM", "Preventive Maintenance，预防性维护。设备定期保养，EAP要在PM期间锁定设备，避免MES派活过来。"),
+    ("Interlock", "联锁。设备的安全机制，比如门没关好就不能启动工艺，EAP要处理Interlock触发时的异常流程。"),
+    ("Alarm", "报警。设备异常时发出的告警，EAP要采集Alarm信息、分级、上报MES，严重的要触发停机。"),
+    ("CIM", "Computer Integrated Manufacturing，计算机集成制造。泛指工厂里所有自动化系统的总称，EAP属于CIM的一部分。"),
+    ("Stripmap", "条带图。把多片晶圆的测试结果按条带排列展示，用于分析工艺均匀性，EAP数据可视化常用。"),
+    ("Yield", "良率。一片晶圆上合格die占总数的比例，是半导体厂最核心的指标，EAP所有工作最终都服务于Yield。"),
+    ("CD", "Critical Dimension，关键尺寸。光刻后线条的宽度，是工艺控制的核心参数，EAP常配合APC做CD的闭环控制。"),
+    ("Overlay", "套刻精度。前后两层光刻图案的对齐偏差，EAP要配合APC根据Overlay测量结果调整下一批曝光参数。"),
+]
+
+
+def get_semicon_term():
+    """随机获取一个半导体专业术语及解释"""
+    return random.choice(SEMICON_TERMS)
+
+
 # ============== 天气模块 ==============
 def get_weather():
     """获取成都天气"""
@@ -337,7 +402,7 @@ def gold_summary(gold_list):
 
 
 # ============== 邮件模块 ==============
-def build_email_content(weather, gold_list, fitness_tip, date_str):
+def build_email_content(weather, gold_list, fitness_tip, workplace_tip, semicon_term, date_str):
     """构建邮件正文（HTML 格式）"""
     weekday_map = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"]
     now = datetime.now()
@@ -451,6 +516,27 @@ def build_email_content(weather, gold_list, fitness_tip, date_str):
   </div>
 """
 
+    # 职场沟通技巧部分
+    html += f"""
+  <div class="section">
+    <div class="section-title"><span>💼</span> 职场沟通小技巧</div>
+    <div class="advice">
+      <p>{workplace_tip}</p>
+    </div>
+  </div>
+"""
+
+    # 半导体专业术语部分
+    term_name, term_desc = semicon_term
+    html += f"""
+  <div class="section">
+    <div class="section-title"><span>🔬</span> 半导体术语小课堂</div>
+    <div class="advice">
+      <p><strong>{term_name}</strong>：{term_desc}</p>
+    </div>
+  </div>
+"""
+
     # 页脚
     html += """
   <div class="footer">
@@ -508,7 +594,7 @@ def main():
     subject = f"{date_str} 日报总结"
 
     # 1. 获取天气
-    print("\n[1/4] 获取成都天气...")
+    print("\n[1/6] 获取成都天气...")
     weather = get_weather()
     if weather:
         print(f"  → {weather['desc']}, {weather['min_temp']}~{weather['max_temp']}℃")
@@ -516,19 +602,29 @@ def main():
         print("  → 获取失败")
 
     # 2. 获取黄金
-    print("\n[2/4] 获取黄金行情...")
+    print("\n[2/6] 获取黄金行情...")
     gold_list = get_gold_price()
     for g in gold_list:
         print(f"  → {g['name']}: {g['price']} {g['change_pct']}")
 
     # 3. 获取健身提示
-    print("\n[3/4] 获取健身提示...")
+    print("\n[3/6] 获取健身提示...")
     fitness_tip = get_fitness_tip()
     print(f"  → {fitness_tip[:30]}...")
 
-    # 4. 生成并发送邮件
-    print("\n[4/4] 生成邮件并发送...")
-    html_content = build_email_content(weather, gold_list, fitness_tip, date_str)
+    # 4. 获取职场沟通技巧
+    print("\n[4/6] 获取职场沟通技巧...")
+    workplace_tip = get_workplace_tip()
+    print(f"  → {workplace_tip[:30]}...")
+
+    # 5. 获取半导体术语
+    print("\n[5/6] 获取半导体术语...")
+    semicon_term = get_semicon_term()
+    print(f"  → {semicon_term[0]}: {semicon_term[1][:30]}...")
+
+    # 6. 生成并发送邮件
+    print("\n[6/6] 生成邮件并发送...")
+    html_content = build_email_content(weather, gold_list, fitness_tip, workplace_tip, semicon_term, date_str)
     success = send_email(subject, html_content)
 
     if success:
