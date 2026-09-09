@@ -2,9 +2,9 @@ name: Daily Report Email
 
 on:
   schedule:
-    # 北京时间每天早上8点05分 = UTC 0点05分
-    # 避开整点（GitHub Actions整点高峰会跳过定时触发）
-    - cron: '5 0 * * *'
+    # 北京时间每天早上8点左右收到 = UTC 20点05分（凌晨4:05触发）
+    # GitHub Actions免费版schedule延迟约4小时，故提前4小时触发
+    - cron: '5 20 * * *'
   # 支持手动触发测试
   workflow_dispatch:
 
