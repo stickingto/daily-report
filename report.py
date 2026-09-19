@@ -452,18 +452,10 @@ def build_email_content(weather, gold_list, fitness_tip, workplace_tip, semicon_
 """
     if weather:
         html += f"""
-    <div class="weather-grid">
-      <div class="weather-item"><span class="label">天气状况</span><span class="value">{weather['desc']}</span></div>
-      <div class="weather-item"><span class="label">气温范围</span><span class="value">{weather['min_temp']}℃ ~ {weather['max_temp']}℃</span></div>
-      <div class="weather-item"><span class="label">当前温度</span><span class="value">{weather['temp_c']}℃（体感 {weather['feels_like']}℃）</span></div>
-      <div class="weather-item"><span class="label">紫外线</span><span class="value">{weather['uv_index']}级</span></div>
-      <div class="weather-item"><span class="label">降水概率</span><span class="value">{weather['rain_chance']}%</span></div>
-      <div class="weather-item"><span class="label">湿度</span><span class="value">{weather['humidity']}%</span></div>
-      <div class="weather-item"><span class="label">风力</span><span class="value">{weather['wind_dir']} {weather['wind_speed']}km/h</span></div>
-      <div class="weather-item"><span class="label">日出/日落</span><span class="value">{weather['sunrise']} / {weather['sunset']}</span></div>
+    <div style="font-size:15px; margin-bottom:12px; line-height:1.8; color:#333;">
+      <p style="margin:0;"><strong>{weather['desc']}</strong>　{weather['min_temp']}℃ ~ {weather['max_temp']}℃　当前 {weather['temp_c']}℃（体感 {weather['feels_like']}℃）</p>
     </div>
     <div class="advice">
-      <p><strong>出行建议：</strong></p>
       <p>{weather_advice(weather).replace(chr(10), '</p><p>')}</p>
     </div>
 """
@@ -471,35 +463,34 @@ def build_email_content(weather, gold_list, fitness_tip, workplace_tip, semicon_
         html += '<p style="color:#999;">天气数据获取失败，请自行查看天气预报。</p>'
     html += "</div>"
 
-    # 黄金部分
+    # 黄金部分（只显示国内人民币金价）
     html += """
   <div class="section">
-    <div class="section-title"><span>💰</span> 黄金行情</div>
+    <div class="section-title"><span>💰</span> 国内黄金行情</div>
 """
     if gold_list:
-        html += """
-    <table>
-      <thead>
-        <tr><th>品种</th><th>最新价</th><th>涨跌</th><th>涨跌幅</th></tr>
-      </thead>
-      <tbody>
-"""
+        # 只取人民币金价（国内容）
+        cny_gold = None
         for g in gold_list:
+            if "元/克" in g["unit"]:
+                cny_gold = g
+                break
+        if cny_gold:
+            cls = "up" if cny_gold["is_up"] else "down"
+            arrow = "↑" if cny_gold["is_up"] else "↓"
+            html += f"""
+    <div style="font-size:15px; line-height:1.8; color:#333;">
+      <p style="margin:0;">人民币金价：<strong>{cny_gold['price']} 元/克</strong>　<span class="{cls}">{arrow} {cny_gold['change_pct']}</span></p>
+    </div>
+"""
+        else:
+            # 没有人民币金价就显示第一个
+            g = gold_list[0]
             cls = "up" if g["is_up"] else "down"
             arrow = "↑" if g["is_up"] else "↓"
             html += f"""
-        <tr>
-          <td>{g['name']}</td>
-          <td>{g['price']} {g['unit']}</td>
-          <td class="{cls}">{arrow} {g['change']}</td>
-          <td class="{cls}">{g['change_pct']}</td>
-        </tr>
-"""
-        html += f"""
-      </tbody>
-    </table>
-    <div class="advice" style="margin-top:12px;">
-      <p>{gold_summary(gold_list)}</p>
+    <div style="font-size:15px; line-height:1.8; color:#333;">
+      <p style="margin:0;">{g['name']}：<strong>{g['price']} {g['unit']}</strong>　<span class="{cls}">{arrow} {g['change_pct']}</span></p>
     </div>
 """
     else:
